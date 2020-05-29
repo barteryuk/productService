@@ -82,15 +82,24 @@ class productCtrl {
                 inputData['photo'] = response
                 console.log("CHECK INPUT DATA");
                 console.log(inputData);
+
+                return Product.create(inputData)
             })
-            
-            await Product.create(inputData).then((response) => {
+            .then((response) => {
                 console.log("SUCCESS ADD");
                 res.status(201).json({
                     message: "NEW PRODUCT ADDED",
                     result: response,
                 });
-            });
+            })
+            
+            // await Product.create(inputData).then((response) => {
+            //     console.log("SUCCESS ADD");
+            //     res.status(201).json({
+            //         message: "NEW PRODUCT ADDED",
+            //         result: response,
+            //     });
+            // });
         } catch (err) {
             console.log("ERROR, ", err);
             return res.status(err.status).json({

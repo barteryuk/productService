@@ -35,6 +35,7 @@ let wrongInput = {};
 let errors = [];
 let testToken;
 var testurl = "http://localhost:4002";
+var product
 
 chai.use(chaiHttp);
 
@@ -63,18 +64,7 @@ describe("MICROSERVICES TEST", () => {
     describe("PRODUCT SERVICES TEST", () => {
         //ADD PRODUCT
         it("create product success", async () => {
-            // let body = {
-            //     name: 'test',
-            //     qty: 10,
-            //     description: 'String, min: 50, max: 150, required',
-            //     price: 5000,
-            //     categories: 'test'
-            // }
-            // let headers = { token }
-
-            // await chai.request(testurl)
             res = await chai.request(app)
-            // return chai.request(app)
                 .post("/products/add")
                 // .type('form')
                 .field("title", testInput.title)
@@ -82,41 +72,28 @@ describe("MICROSERVICES TEST", () => {
                 .field("value", testInput.value)
                 .field("UserId", testInput.UserId)
                 .attach("photo", tesPropicPath)
-                // .end((err, res) => {
 
-                //     if(err) {
-                //         return done(err)
-                //     }
+                expect(res).to.have.status(201);
 
-                //     let product = res.body;
-                //     console.log("RES STATUS IS");
-                //     console.log(res.status);
-                //     console.log("RES BODY IS");
-                //     console.log(product);
-                //     expect(res).to.have.status(201);
-                //     // productId = product._id
-                //     // expect(product).to.have.property('name')
-                //     // expect(product).to.have.property('qty')
-                //     // expect(product).to.have.property('description')
-                //     // expect(product).to.have.property('image')
-                //     // expect(product).to.have.property('category')
-                //     // expect(product).to.have.property('price')
-                //     // expect(product.name).to.be.a('String')
-                //     // expect(product.description).to.be.a('String')
-                //     // expect(product.image).to.be.a('String')
-                //     // expect(product.category).to.be.a('String')
-                //     // expect(product.qty).to.be.a('Number')
-                //     // expect(product.price).to.be.a('Number')
-                //     // sampleProductId = ObjectId(product._id);
-                //     return done();
-                // })
-                // .catch((err) => {
-                //     throw err;
-                // });
+                console.log("this is res.body");
+                console.log(res.body);
+                product = res.body.result
+                
 
-                expect(res).to.have.status(201);          
+                // EXPECT PROPERTIES: COMPULSTORY ONES
+                expect(product).to.have.property('title')
+                expect(product).to.have.property('value')
+                expect(product).to.have.property('description')
+                expect(product).to.have.property('UserId')
+                expect(product).to.have.property('photo')
 
-                // done()
+                // EXPECT FORMAT
+                expect(product.title).to.be.a('String')
+                expect(product.description).to.be.a('String')
+                expect(product.photo).to.be.a('String')
+                expect(product.UserId).to.be.a('String')
+                expect(product.value).to.be.a('Number')
+
         });
     });
 });

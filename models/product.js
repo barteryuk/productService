@@ -29,8 +29,8 @@ const ProductSchema = new mongoose.Schema({
       type: [String]
   },
   UserId: {
-       type: String,
-        required: [true, 'USERID MUST BE FILLED']
+       type: String
+        // ,required: [true, 'USERID MUST BE FILLED']
   },
   BiddersId: {
        type: [String]

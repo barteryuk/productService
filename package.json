@@ -19,12 +19,16 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "jest": "^26.0.1",
+    "mocha": "^7.2.0",
     "supertest": "^4.0.2"
   },
   "scripts": {
+    "test": "mocha --timeout 15000",
     "dev": "NODE_ENV=development nodemon app.js",
-    "test": "NODE_ENV=test clear && jest --detectOpenHandles"
+    "start": "NODE_ENV=production node app.js"
   },
   "repository": {
     "type": "git",

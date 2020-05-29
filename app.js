@@ -1,17 +1,6 @@
-// require('dotenv').config()
-
-const env = process.env.NODE_ENV 
-console.log(process.env.NODE_ENV +  "INI ENV SKRG!")
-switch (env) {
-  case 'development':
-    require('dotenv').config({path: process.cwd() + '/.env'});
-      break;
-  case 'test':
-    console.log("MASUK INI TEST");
-    require('dotenv').config({path: process.cwd() + '/.env.test'});
-      break;
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
-
 
 const express = require('express');
 const app = express();
@@ -22,9 +11,13 @@ const router = require('./router/index');
 const mongoose = require('mongoose');
 const connection = mongoose.connection;
 
-url = process.env.DBURL
+var url = "mongodb://localhost:27017"
+var dbName = "productService"
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(url, { 
+  dbName: dbName,
+  useNewUrlParser: true, 
+  useUnifiedTopology: true })
 
 connection.on('error', (err) => {
   console.error(err);
@@ -45,3 +38,5 @@ connection.on('ready', () => {
 		console.log(`LISTENING ON: ${port}`)
 	})
 })
+
+module.exports = app

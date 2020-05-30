@@ -3,7 +3,7 @@ const {ObjectId} = require("mongoose").Types;
 const Double = require("@mongoosejs/double");
 const {post2Imgur} = require("../helpers/imgur.js");
 const {customError} = require("../helpers/customError");
-const {verifyToken} = require('../helpers/jwt')
+// const {verifyToken} = require('../helpers/jwt')
 let fs = require("fs");
 var data;
 var imgSrc;
@@ -77,8 +77,8 @@ class productCtrl {
         console.log("REQ ACCESS TOKEN");
         console.log(req.headers.access_token);
 
-        token = req.headers.access_token
-        decrypted = verifyToken(token)
+        // token = req.headers.access_token
+        decrypted = req.decoded
 
         console.log("this is decrypted")
         console.log(decrypted);

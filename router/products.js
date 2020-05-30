@@ -2,7 +2,8 @@ const productRouter = require('express').Router()
 // const { findAll, findOne, addNew, update, drop } = require('../controllers/productCtrl.js')
 const { findAll, findOne, addNew, drop } = require('../controllers/productCtrl.js')
 // const {findItem} = require('../middleware/findItem.js')
-
+const {authentication} = require('../middleware/authentication')
+const {authorization} = require('../middleware/authorization')
 
 // MULTER SETTINGS
 const multer = require('multer')
@@ -45,8 +46,9 @@ const upload = multer({
 
 productRouter.get('/getall', findAll)
 productRouter.get('/getone/:productid', findOne)
+productRouter.use(authentication)
 productRouter.post('/add', upload.single('photo'), addNew)
 // productRouter.put('/:productid', update)
-productRouter.delete('/drop/:productid', drop)
+productRouter.delete('/drop/:productid', authorization, drop)
 
 module.exports = productRouter

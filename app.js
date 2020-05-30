@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors')
 const morgan = require('morgan')
+const errorHandler = require('./middleware/errorHandler')
 const port = process.env.PORT || 4002;
 const router = require('./router/index');
 const mongoose = require('mongoose');
@@ -34,6 +35,7 @@ connection.on('ready', () => {
   app.use(express.json())
   app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
   app.use(router)
+  app.use(errorHandler)
   app.listen(port, () => {
 		console.log(`LISTENING ON: ${port}`)
 	})

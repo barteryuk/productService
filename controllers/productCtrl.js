@@ -3,11 +3,14 @@ const {ObjectId} = require("mongoose").Types;
 const Double = require("@mongoosejs/double");
 const {post2Imgur} = require("../helpers/imgur.js");
 const {customError} = require("../helpers/customError");
+const {verifyToken} = require('../helpers/jwt')
 let fs = require("fs");
 var data;
 var imgSrc;
 var foto64;
 var inputData;
+var token
+var decrypted
 class productCtrl {
     static async findAll(req, res, next) {
         try {
@@ -68,8 +71,17 @@ class productCtrl {
         console.log(req.body);
         console.log("REQ FILES IS");
         console.log(req.file);
-        var {title, description, value, UserId} = req.body;
+        // var {title, description, value, UserId} = req.body;
+        var {title, description, value} = req.body;
 
+        console.log("REQ ACCESS TOKEN");
+        console.log(req.headers.access_token);
+
+        token = req.headers.access_token
+        decrypted = verifyToken(token)
+
+        console.log("this is decrypted")
+        console.log(decrypted);
 
         if (req.file) {
             imgSrc = req.file.path;
@@ -94,7 +106,7 @@ class productCtrl {
                 photo: null,
                 value: value,
                 // UserId: req.headers.userId
-                UserId: UserId,
+                UserId: String(decrypted._id),
             };
 
             // UPLOAD IMGUR JALUR RESMI

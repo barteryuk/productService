@@ -247,6 +247,11 @@ class productCtrl {
 
     static async bidItem(req, res, next) {
         console.log("UPDATING FOR SELECTING COLLATERAL");
+        
+
+        console.log("REQ PARAMS");
+        console.log(req.params);
+
         var itemId = ObjectId(req.params.productid)
         var collateralId = ObjectId(req.params.collateralid)
 
@@ -272,6 +277,9 @@ class productCtrl {
                     new: true,
                 }
             )
+
+            console.log("WHAT IS UPDATE FROM BID?");
+            console.log(data, "\n");
 
             // data = await Product
             //         .findOne({_id: itemId})

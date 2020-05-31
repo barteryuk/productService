@@ -30,7 +30,12 @@ const ProductSchema = new mongoose.Schema({
        type: String
         // ,required: [true, 'USERID MUST BE FILLED']
   },
-  BidProductId: [{ type: Schema.ObjectId, ref: 'Product' }],
+  category: {
+      type: String,
+      enum: ['BNIB', 'BNOB', 'Used'],
+      default: 'Used'
+  },
+  BidProductId: [{}],
     //    type: [String],
     
 

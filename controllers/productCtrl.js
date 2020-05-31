@@ -10,7 +10,9 @@ var imgSrc;
 var foto64;
 var inputData;
 var token
+var userId
 var decrypted
+var raw
 class productCtrl {
     static async findAll(req, res, next) {
         try {
@@ -208,42 +210,89 @@ class productCtrl {
         }
     }
 
+    static async getOwnItems (req, res, next) {
+        console.log("GETTING OWN ITEMS @ PRODUCTSERVICES");
+        decrypted = req.decoded
+        // console.log("this is decoded")
+        // console.log(decrypted);
+        userId = ObjectId(decrypted._id)
 
-    static async update(req, res, next) {
-        let updData = {
-            title: req.body.title,
-            overview: req.body.overview,
-            poster_path: req.body.poster_path,
-            popularity: req.body.popularity,
-            tags: req.body.tags,
-        };
+        console.log("THIS IS DECRYPTED ");
+        console.log(decrypted);
 
         try {
-            // await Product.updateOne({
-            //     _id: req.params.movieid
-            //   }, updData)
-            console.log("THIS IS ID 2 UPDATE");
-            console.log(req.params.movieid);
-            await Product.findOneAndUpdate(
-                {
-                    _id: req.params.movieid,
-                },
-                updData,
-                {
-                    new: true,
-                }
-            ).then((response) => {
-                console.log("UPDATE SUCCESS");
-                return res.status(200).json({
-                    message: "UPDATE MOVIE SUCCESS",
-                    result: response,
-                });
+            
+            data = await Product.find({UserId: userId});
+            return res.status(200).json({
+                // message: 'FETCH ALL SUCCESS',
+                // result: data
+                data,
             });
         } catch (err) {
             console.log("ERROR, ", err);
-            return res.status(err.status).json({
-                message: err.message,
+            // return res.status(err.status).json({
+            //     message: err.message,
+            // });
+            // console.log("ERROR STATUS IS");
+            // console.log(err.status, "\n");
+            // console.log("ERROR MESSAGE IS");
+            // console.log(err.message, "\n");
+            // console.log("ERROR CODE IS");
+            // console.log(err.code, "\n");
+            return next({code: 404, message: err.message});
+        }
+
+    }
+
+
+    static async bidItem(req, res, next) {
+        console.log("UPDATING FOR SELECTING COLLATERAL");
+        var itemId = ObjectId(req.params.productid)
+        var collateralId = ObjectId(req.params.collateralid)
+
+        try {
+
+            console.log("THIS IS ID 2 UPDATE");
+            
+            raw = await Product.findById(collateralId)
+            console.log("what is raw?");
+            console.log(raw);
+
+            data = await Product.findOneAndUpdate(
+                {
+                    _id: itemId,
+                },
+                {
+                    $push: {
+                        BidProductId: raw
+                    }
+                }
+                ,
+                {
+                    new: true,
+                }
+            )
+
+            // data = await Product
+            //         .findOne({_id: itemId})
+            //         .populate('BidProductId', raw)
+            return res.status(200).json({
+                    message: "BID SUCCESS",
+                    result: data
             });
+        } 
+        catch (err) {
+            console.log("ERROR, ", err);
+            // return res.status(err.status).json({
+            //     message: err.message,
+            // });
+            console.log("ERROR STATUS IS");
+            console.log(err.status, "\n");
+            console.log("ERROR MESSAGE IS");
+            console.log(err.message, "\n");
+            console.log("ERROR CODE IS");
+            console.log(err.code, "\n");
+            return next(err);
         }
     }
 

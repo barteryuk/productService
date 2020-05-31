@@ -1,11 +1,11 @@
 const productRouter = require('express').Router()
 // const { findAll, findOne, addNew, update, drop } = require('../controllers/productCtrl.js')
-const { findAll, findOne, addNew, drop } = require('../controllers/productCtrl.js')
+const { findAll, findOne, addNew, drop, bidItem, getOwnItems } = require('../controllers/productCtrl.js')
 // const {findItem} = require('../middleware/findItem.js')
 const {authentication} = require('../middleware/authentication')
 const {authorization} = require('../middleware/authorization')
 
-// MULTER SETTINGS
+/* // MULTER SETTINGS
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: (req, file, cbDest) => {
@@ -40,7 +40,7 @@ const upload = multer({
         fileSize: 1024 * 1024 * 10
     },
     fileFilter: fileFilter
-}) 
+})  */
 
 
 
@@ -50,6 +50,8 @@ productRouter.use(authentication)
 productRouter.post('/add', addNew)
 // productRouter.post('/add', upload.single('photo'), addNew)
 // productRouter.put('/:productid', update)
+productRouter.get('/myItems', getOwnItems)
+productRouter.put('/bid/:productid/with/:collateralid', bidItem)
 productRouter.delete('/drop/:productid', authorization, drop)
 
 module.exports = productRouter

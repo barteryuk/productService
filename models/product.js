@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 const Double = require('@mongoosejs/double')
 const ProductSchema = new mongoose.Schema({
   title: {
@@ -22,9 +23,6 @@ const ProductSchema = new mongoose.Schema({
       type: Double,
       required: [true, 'VALUE MUST BE FILLED']
   },
-  rating: {
-      type: Double
-  },
   tags: {
       type: [String]
   },
@@ -32,11 +30,15 @@ const ProductSchema = new mongoose.Schema({
        type: String
         // ,required: [true, 'USERID MUST BE FILLED']
   },
-  BiddersId: {
-       type: [String]
-  },
+  BidProductId: [{ type: Schema.ObjectId, ref: 'Product' }],
+    //    type: [String],
+    
+
   FinalBidderId: {
        type: String
+  },
+  FinalBidderRating: {
+      type: Double
   },
   TopListingStatusDate: {
        type: String

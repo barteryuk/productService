@@ -47,7 +47,8 @@ const upload = multer({
 productRouter.get('/getall', findAll)
 productRouter.get('/getone/:productid', findOne)
 productRouter.use(authentication)
-productRouter.post('/add', upload.single('photo'), addNew)
+productRouter.post('/add', addNew)
+// productRouter.post('/add', upload.single('photo'), addNew)
 // productRouter.put('/:productid', update)
 productRouter.delete('/drop/:productid', authorization, drop)
 

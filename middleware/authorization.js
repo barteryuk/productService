@@ -11,7 +11,7 @@ async function authorization(req, res, next) {
         var result  = await Product.findOne({
                 _id: productId,
             });
-        if (result && (String(result.UserId) == String(userId))) {
+        if (result && (String(result.userId) == String(userId))) {
             console.log("PASSED AUTHORIZATION");
             return next();
         } else {

@@ -73,7 +73,7 @@ class productCtrl {
     //     console.log(req.body);
     //     console.log("REQ FILES IS");
     //     console.log(req.file);
-    //     // var {title, description, value, UserId} = req.body;
+    //     // var {title, description, value, userId} = req.body;
     //     var {title, description, value} = req.body;
 
     //     console.log("REQ ACCESS TOKEN");
@@ -107,8 +107,8 @@ class productCtrl {
     //             description: description,
     //             photo: null,
     //             value: value,
-    //             // UserId: req.headers.userId
-    //             UserId: String(decrypted._id),
+    //             // userId: req.headers.userId
+    //             userId: String(decrypted._id),
     //         };
 
     //         // UPLOAD IMGUR JALUR RESMI
@@ -152,7 +152,7 @@ class productCtrl {
         console.log("REQ BODY IS");
         console.log(req.body);
 
-        // var {title, description, value, UserId} = req.body;
+        // var {title, description, value, userId} = req.body;
         var {title, description, photo, value} = req.body;
 
 
@@ -171,8 +171,8 @@ class productCtrl {
             description: description,
             photo: photo,
             value: +value,
-            // UserId: req.headers.userId
-            UserId: String(decrypted._id),
+            // userId: req.headers.userId
+            userId: String(decrypted._id),
         };
 
         
@@ -222,7 +222,7 @@ class productCtrl {
 
         try {
             
-            data = await Product.find({UserId: userId});
+            data = await Product.find({userId: userId});
             return res.status(200).json({
                 // message: 'FETCH ALL SUCCESS',
                 // result: data
@@ -269,7 +269,7 @@ class productCtrl {
                 },
                 {
                     $push: {
-                        BidProductId: raw
+                        bidProductId: raw
                     }
                 }
                 ,
@@ -283,7 +283,7 @@ class productCtrl {
 
             // data = await Product
             //         .findOne({_id: itemId})
-            //         .populate('BidProductId', raw)
+            //         .populate('bidProductId', raw)
             return res.status(200).json({
                     message: "BID SUCCESS",
                     result: data

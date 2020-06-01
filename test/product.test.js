@@ -30,7 +30,7 @@ const testInput = {
     description: "naga merah",
     photo: tesPropicPath,
     value: 5000000,
-    UserId: "sample1",
+    userId: "sample1",
 };
 let wrongInput = {};
 var wrongId
@@ -59,7 +59,7 @@ describe("MICROSERVICES TEST", () => {
     // });
 
     after(async () => {
-        await Product.deleteMany({UserId: testInput.UserId});
+        await Product.deleteMany({userId: testInput.userId});
     });
 
     // CREATE PRODUCT
@@ -74,7 +74,7 @@ describe("MICROSERVICES TEST", () => {
                     .field("title", testInput.title)
                     .field("description", testInput.description)
                     .field("value", testInput.value)
-                    .field("UserId", testInput.UserId)
+                    .field("userId", testInput.userId)
                     .attach("photo", tesPropicPath)
 
                 expect(res).to.have.status(201);
@@ -90,14 +90,14 @@ describe("MICROSERVICES TEST", () => {
                 expect(product).to.have.property('title')
                 expect(product).to.have.property('value')
                 expect(product).to.have.property('description')
-                expect(product).to.have.property('UserId')
+                expect(product).to.have.property('userId')
                 expect(product).to.have.property('photo')
 
                 // EXPECT FORMAT
                 expect(product.title).to.be.a('String')
                 expect(product.description).to.be.a('String')
                 expect(product.photo).to.be.a('String')
-                expect(product.UserId).to.be.a('String')
+                expect(product.userId).to.be.a('String')
                 expect(product.value).to.be.a('Number')
 
             }
@@ -119,7 +119,7 @@ describe("MICROSERVICES TEST", () => {
                     .field("title", '')
                     .field("description", testInput.description)
                     .field("value", -1)
-                    .field("UserId", testInput.UserId)
+                    .field("userId", testInput.userId)
                     .attach("photo", tesPropicPath)
 
             }

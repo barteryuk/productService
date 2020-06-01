@@ -35,7 +35,7 @@ const ProductSchema = new mongoose.Schema({
       default: 'Used'
   },
   bidProductId: [{}],
-  rating: {
+  productOwnerRating: {
       type: Double,
       min: 0,
       max: 5,

@@ -52,7 +52,7 @@ productRouter.post('/add', addNew)
 // productRouter.put('/:productid', update)
 productRouter.get('/myItems', getOwnItems)
 productRouter.put('/bid/:productid/with/:collateralid', bidItem)
-productRouter.put('/rejectBid/:productid/with/:collateralid', rejectBid)
+productRouter.put('/rejectBid/:productid/with/:collateralid', authorization, rejectBid)
 productRouter.delete('/drop/:productid', authorization, drop)
 
 module.exports = productRouter

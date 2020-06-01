@@ -367,6 +367,70 @@ class productCtrl {
 
     }
 
+
+    // static async closeBid(req, res, next) {
+
+    //     console.log("ACCEPTING BID & CLOSE THE DEAL");
+
+    //     console.log("REQ PARAMS");
+    //     console.log(req.params);
+
+    //     var itemId = ObjectId(req.params.productid)
+    //     var collateralId = ObjectId(req.params.collateralid)
+
+    //     try {
+
+    //         console.log("THIS IS THE CLOSING BID'S PRODUCT ID");
+            
+    //         raw = await Product.findById(collateralId)
+    //         console.log("what is raw?");
+    //         console.log(raw);
+
+
+
+    //         data = await Product.findOneAndUpdate(
+    //             {
+    //                 _id: itemId,
+    //             },
+    //             {
+    //                 $pull: {
+    //                     bidProductId: raw
+    //                 }
+    //             }
+    //             ,
+    //             {
+    //                 new: true,
+    //             }
+    //         )
+
+    //         console.log("WHAT IS UPDATE FROM BID?");
+    //         console.log(data, "\n");
+
+    //         // data = await Product
+    //         //         .findOne({_id: itemId})
+    //         //         .populate('bidProductId', raw)
+    //         return res.status(200).json({
+    //                 message: "BID REJECTED",
+    //                 result: data
+    //         });
+    //     } 
+    //     catch (err) {
+    //         console.log("ERROR, ", err);
+    //         // return res.status(err.status).json({
+    //         //     message: err.message,
+    //         // });
+    //         console.log("ERROR STATUS IS");
+    //         console.log(err.status, "\n");
+    //         console.log("ERROR MESSAGE IS");
+    //         console.log(err.message, "\n");
+    //         console.log("ERROR CODE IS");
+    //         console.log(err.code, "\n");
+    //         return next(err);
+    //     }
+
+    // }
+
+
     static async drop(req, res, next) {
         try {
             // await Product.deleteOne({_id: req.params.movieid})

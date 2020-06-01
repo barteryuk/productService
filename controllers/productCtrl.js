@@ -153,7 +153,7 @@ class productCtrl {
         console.log(req.body);
 
         // var {title, description, value, userId} = req.body;
-        var {title, description, photo, value} = req.body;
+        var {title, description, photo, value, category} = req.body;
 
 
         console.log("REQ ACCESS TOKEN");
@@ -171,6 +171,7 @@ class productCtrl {
             description: description,
             photo: photo,
             value: +value,
+            category: category,
             // userId: req.headers.userId
             userId: String(decrypted._id),
         };

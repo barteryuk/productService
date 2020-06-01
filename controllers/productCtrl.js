@@ -1,7 +1,8 @@
 const Product = require("../models/product");
 const {ObjectId} = require("mongoose").Types;
 const Double = require("@mongoosejs/double");
-const {post2Imgur} = require("../helpers/imgur.js");
+// const {post2Imgur} = require("../helpers/imgur.js");
+const axios = require('axios')
 const {customError} = require("../helpers/customError");
 // const {verifyToken} = require('../helpers/jwt')
 let fs = require("fs");
@@ -13,6 +14,7 @@ var token
 var userId
 var decrypted
 var raw
+const USERAPI = 'http://localhost:4001/users/'
 class productCtrl {
     static async findAll(req, res, next) {
         try {
@@ -307,6 +309,90 @@ class productCtrl {
         }
     }
 
+
+    static async closeBid(req, res, next) {
+
+        console.log("ACCEPTING BID & CLOSE THE DEAL");
+
+        console.log("REQ PARAMS");
+        console.log(req.params);
+
+        var itemId = ObjectId(req.params.productid)
+        var collateralId = ObjectId(req.params.collateralid)
+
+        try {
+
+            console.log("THIS IS THE CLOSING BID'S PRODUCT ID");
+            
+            // FIND COLLATERAL OBJECT
+            raw = await Product.findById(collateralId)
+            console.log("what is raw?");
+            console.log(raw);
+
+            var bidderId = raw.userId
+
+            var biddersArrRaw = await axios({
+                method: 'get',
+                url: USERAPI
+            })
+
+            console.log("WHAT'S BIDDERS' INFO");
+            console.log(biddersArrRaw.data, "\n");
+
+            var biddersArr = biddersArrRaw.data
+
+
+            var bidderInfo = biddersArr.filter(el => el._id == ObjectId(bidderId))[0]
+
+            console.log("WHOS' FINAL BIDDER?");
+            console.log(bidderInfo, "\n")
+
+
+            data = await Product.findOneAndUpdate(
+                {
+                    _id: itemId,
+                },
+                {
+                    $push: {
+                        finalBidderId: bidderInfo,
+                        finalBiddersProductId: raw
+                    },
+                    status: 'close'
+                }
+                ,
+                {
+                    new: true,
+                }
+            )
+
+            console.log("WHAT IS UPDATE FROM BID?");
+            console.log(data, "\n");
+
+            // data = await Product
+            //         .findOne({_id: itemId})
+            //         .populate('bidProductId', raw)
+            return res.status(200).json({
+                    message: "BID CLOSED!",
+                    result: data
+            });
+        } 
+        catch (err) {
+            console.log("ERROR, ", err);
+            // return res.status(err.status).json({
+            //     message: err.message,
+            // });
+            console.log("ERROR STATUS IS");
+            console.log(err.status, "\n");
+            console.log("ERROR MESSAGE IS");
+            console.log(err.message, "\n");
+            console.log("ERROR CODE IS");
+            console.log(err.code, "\n");
+            return next(err);
+        }
+
+    }
+
+
     static async rejectBid(req, res, next) {
 
         console.log("REJECTING BID");
@@ -366,69 +452,6 @@ class productCtrl {
         }
 
     }
-
-
-    // static async closeBid(req, res, next) {
-
-    //     console.log("ACCEPTING BID & CLOSE THE DEAL");
-
-    //     console.log("REQ PARAMS");
-    //     console.log(req.params);
-
-    //     var itemId = ObjectId(req.params.productid)
-    //     var collateralId = ObjectId(req.params.collateralid)
-
-    //     try {
-
-    //         console.log("THIS IS THE CLOSING BID'S PRODUCT ID");
-            
-    //         raw = await Product.findById(collateralId)
-    //         console.log("what is raw?");
-    //         console.log(raw);
-
-
-
-    //         data = await Product.findOneAndUpdate(
-    //             {
-    //                 _id: itemId,
-    //             },
-    //             {
-    //                 $pull: {
-    //                     bidProductId: raw
-    //                 }
-    //             }
-    //             ,
-    //             {
-    //                 new: true,
-    //             }
-    //         )
-
-    //         console.log("WHAT IS UPDATE FROM BID?");
-    //         console.log(data, "\n");
-
-    //         // data = await Product
-    //         //         .findOne({_id: itemId})
-    //         //         .populate('bidProductId', raw)
-    //         return res.status(200).json({
-    //                 message: "BID REJECTED",
-    //                 result: data
-    //         });
-    //     } 
-    //     catch (err) {
-    //         console.log("ERROR, ", err);
-    //         // return res.status(err.status).json({
-    //         //     message: err.message,
-    //         // });
-    //         console.log("ERROR STATUS IS");
-    //         console.log(err.status, "\n");
-    //         console.log("ERROR MESSAGE IS");
-    //         console.log(err.message, "\n");
-    //         console.log("ERROR CODE IS");
-    //         console.log(err.code, "\n");
-    //         return next(err);
-    //     }
-
-    // }
 
 
     static async drop(req, res, next) {

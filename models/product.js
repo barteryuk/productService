@@ -23,7 +23,8 @@ const ProductSchema = new mongoose.Schema({
       required: [true, 'VALUE MUST BE FILLED']
   },
   tags: {
-      type: [String]
+      type: [String],
+      default: []
   },
   userId: {
        type: String
@@ -39,7 +40,7 @@ const ProductSchema = new mongoose.Schema({
       type: Double,
       min: 0,
       max: 5,
-      default: 0
+      default: 5
   },
   finalBidderId: [{}],
   finalBiddersProductId: [{}],

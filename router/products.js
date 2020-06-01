@@ -1,6 +1,6 @@
 const productRouter = require('express').Router()
 // const { findAll, findOne, addNew, update, drop } = require('../controllers/productCtrl.js')
-const { findAll, findOne, addNew, drop, bidItem, getOwnItems } = require('../controllers/productCtrl.js')
+const { findAll, findOne, addNew, drop, bidItem, getOwnItems, rejectBid } = require('../controllers/productCtrl.js')
 // const {findItem} = require('../middleware/findItem.js')
 const {authentication} = require('../middleware/authentication')
 const {authorization} = require('../middleware/authorization')
@@ -52,6 +52,7 @@ productRouter.post('/add', addNew)
 // productRouter.put('/:productid', update)
 productRouter.get('/myItems', getOwnItems)
 productRouter.put('/bid/:productid/with/:collateralid', bidItem)
+productRouter.put('/rejectBid/:productid/with/:collateralid', rejectBid)
 productRouter.delete('/drop/:productid', authorization, drop)
 
 module.exports = productRouter

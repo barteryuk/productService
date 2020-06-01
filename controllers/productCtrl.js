@@ -153,7 +153,7 @@ class productCtrl {
         console.log(req.body);
 
         // var {title, description, value, userId} = req.body;
-        var {title, description, photo, value, category} = req.body;
+        var {title, description, photopath, tagStr, value, category} = req.body;
 
 
         console.log("REQ ACCESS TOKEN");
@@ -165,13 +165,16 @@ class productCtrl {
         console.log("this is decrypted")
         console.log(decrypted);
 
+        var tagArr = tagStr.split(';')
+
         // PREP INPUT DATA
         inputData = {
             title: title,
             description: description,
-            photo: photo,
+            photo: photopath,
             value: +value,
             category: category,
+            tags: tagArr,
             // userId: req.headers.userId
             userId: String(decrypted._id),
         };
@@ -248,7 +251,6 @@ class productCtrl {
 
     static async bidItem(req, res, next) {
         console.log("UPDATING FOR SELECTING COLLATERAL");
-        
 
         console.log("REQ PARAMS");
         console.log(req.params);
@@ -305,6 +307,66 @@ class productCtrl {
         }
     }
 
+    static async rejectBid(req, res, next) {
+
+        console.log("REJECTING BID");
+
+        console.log("REQ PARAMS");
+        console.log(req.params);
+
+        var itemId = ObjectId(req.params.productid)
+        var collateralId = ObjectId(req.params.collateralid)
+
+        try {
+
+            console.log("THIS IS ID 2 UPDATE");
+            
+            raw = await Product.findById(collateralId)
+            console.log("what is raw?");
+            console.log(raw);
+
+            data = await Product.findOneAndUpdate(
+                {
+                    _id: itemId,
+                },
+                {
+                    $pull: {
+                        bidProductId: raw
+                    }
+                }
+                ,
+                {
+                    new: true,
+                }
+            )
+
+            console.log("WHAT IS UPDATE FROM BID?");
+            console.log(data, "\n");
+
+            // data = await Product
+            //         .findOne({_id: itemId})
+            //         .populate('bidProductId', raw)
+            return res.status(200).json({
+                    message: "BID REJECTED",
+                    result: data
+            });
+        } 
+        catch (err) {
+            console.log("ERROR, ", err);
+            // return res.status(err.status).json({
+            //     message: err.message,
+            // });
+            console.log("ERROR STATUS IS");
+            console.log(err.status, "\n");
+            console.log("ERROR MESSAGE IS");
+            console.log(err.message, "\n");
+            console.log("ERROR CODE IS");
+            console.log(err.code, "\n");
+            return next(err);
+        }
+
+    }
+
     static async drop(req, res, next) {
         try {
             // await Product.deleteOne({_id: req.params.movieid})
@@ -332,6 +394,7 @@ class productCtrl {
             return next(err);
         }
     }
+
 }
 
 module.exports = productCtrl;

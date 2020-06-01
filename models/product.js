@@ -41,9 +41,8 @@ const ProductSchema = new mongoose.Schema({
       max: 5,
       default: 0
   },
-  finalBidderId: {
-       type: String
-  },
+  finalBidderId: [{}],
+  finalBiddersProductId: [{}],
   finalBidderRating: {
       type: Double,
       min: 0,

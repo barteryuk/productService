@@ -221,7 +221,9 @@ class productCtrl {
         decrypted = req.decoded
         // console.log("this is decoded")
         // console.log(decrypted);
-        userId = ObjectId(decrypted._id)
+        // userId = ObjectId(decrypted._id)
+
+        userId = decrypted._id
 
         console.log("THIS IS DECRYPTED ");
         console.log(decrypted);
@@ -331,21 +333,22 @@ class productCtrl {
 
             var bidderId = raw.userId
 
-            var biddersArrRaw = await axios({
-                method: 'get',
-                url: USERAPI
-            })
+            // // FOR DEV 
+            // var biddersArrRaw = await axios({
+            //     method: 'get',
+            //     url: USERAPI
+            // })
 
-            console.log("WHAT'S BIDDERS' INFO");
-            console.log(biddersArrRaw.data, "\n");
+            // console.log("WHAT'S BIDDERS' INFO");
+            // console.log(biddersArrRaw.data, "\n");
 
-            var biddersArr = biddersArrRaw.data
+            // var biddersArr = biddersArrRaw.data
 
 
-            var bidderInfo = biddersArr.filter(el => el._id == ObjectId(bidderId))[0]
+            // var bidderInfo = biddersArr.filter(el => el._id == ObjectId(bidderId))[0]
 
-            console.log("WHOS' FINAL BIDDER?");
-            console.log(bidderInfo, "\n")
+            // console.log("WHOS' FINAL BIDDER?");
+            // console.log(bidderInfo, "\n")
 
 
             data = await Product.findOneAndUpdate(
@@ -354,7 +357,8 @@ class productCtrl {
                 },
                 {
                     $push: {
-                        finalBidderId: bidderInfo,
+                        // finalBidderId: bidderInfo, // DEV
+                        finalBidderId: bidderId, //TEST
                         finalBiddersProductId: raw
                     },
                     status: 'close'

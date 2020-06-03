@@ -51,7 +51,8 @@ const ProductSchema = new mongoose.Schema({
       default: 0
   },
   topListingStatusDate: {
-       type: String
+       type: String,
+       default: ""
   }
 })
 

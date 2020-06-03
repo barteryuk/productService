@@ -271,6 +271,55 @@ class productCtrl {
     }
 
 
+    static async setTopListing (req, res, next) {
+        console.log("SET TOP LISTING ");
+        var itemId = ObjectId(req.params.productid)
+        var {numOfDays} = req.body
+
+        numOfDays = Number(numOfDays)
+
+        var todayIs = new Date()
+
+        var deadline = todayIs.setDate(todayIs.getDate() + numOfDays);
+        var deadlineStr = new Date(deadline).toISOString()
+
+        console.log("@ CONTROLLER PRIODUCTSERVICE:")
+        console.log(numOfDays, itemId, deadlineStr);
+        try {
+
+            console.log("THIS IS ID 2 PRIMELIST");
+            console.log(itemId);
+
+            data = await Product.findOneAndUpdate({_id: itemId}, {
+                topListingStatusDate: deadlineStr
+            }, {new: true})
+
+            console.log("WHAT IS NEWEST DEADLINE FOR TOP LISTING?");
+            console.log(data);
+
+            return res.status(200).json({
+                    message: "PRIMELIST SUCCESS",
+                    result: data
+            });
+
+
+        }
+        catch (err) {
+            console.log("ERROR, ", err);
+            // return res.status(err.status).json({
+            //     message: err.message,
+            // });
+            console.log("ERROR STATUS IS");
+            console.log(err.status, "\n");
+            console.log("ERROR MESSAGE IS");
+            console.log(err.message, "\n");
+            console.log("ERROR CODE IS");
+            console.log(err.code, "\n");
+            return next(err);
+        }
+    }
+
+
     static async bidItem(req, res, next) {
         console.log("UPDATING FOR SELECTING COLLATERAL");
 

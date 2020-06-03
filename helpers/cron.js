@@ -1,52 +1,28 @@
 const { CronJob } = require("cron");
 const Product = require('../models/product')
 var products
-var pendingUpdate
-var filtered
+
 
 const job = new CronJob(
-  "* */5 * * * *",
-  // () => {
-  //   console.log("checking top list every 5 minutes");
-  //   Users.get({}, (err, users) => {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       const pendingUpdate = [];
-  //       let filtered = {};
-  //       if (users.length !== 0) {
-  //         filtered = users.filter((el) => el.quota < 2);
-  //         if (filtered !== undefined) {
-  //           pendingUpdate.push(...filtered);
-  //         }
-  //         if (pendingUpdate.length !== 0) {
-  //           for (let i = 0; i < pendingUpdate.length; i++) {
-  //             Users.updateOne(
-  //               { _id: pendingUpdate[i]._id },
-  //               { quota: 2 },
-  //               () => {}
-  //             );
-  //           }
-  //           console.log(`successfully updated: ${pendingUpdate.length} data`);
-  //         }
-  //       }
-  //     }
-  //   });
-  // },
+  "* */10 * * * *",
   async () => {
-    console.log("checking top list every 5 minutes");
-
+    console.log("checking top list every 10 minutes");
+    var pendingUpdate = []
+    var filtered = {}
     try {
-
+      
       products = await Product.find({})
 
-      if(products.length != 0) {
+      // console.log("WHAT IS PRODUCT?");
+      // console.log(products, "\n\n");
+
+      if(products.length > 0) {
         filtered = products.filter(el => (el.topListingStatusDate !== null || el.topListingStatusDate !== ""))
         if(filtered !== undefined) {
           pendingUpdate.push(...filtered)
         }
 
-        if(pendingUpdate.length !== 0) {
+        if(pendingUpdate.length > 0) {
           for(let i = 0; i < pendingUpdate.length; i++) {
             Product.findOneAndUpdate(
               { _id: pendingUpdate[i]._id },
@@ -58,11 +34,11 @@ const job = new CronJob(
         }
 
       }
+    }
+    catch(error) {
+      console.log(error)
+    }
 
-    }
-    catch(err) {
-      console.error(err)
-    }
   },
   null,
   false,
@@ -73,6 +49,7 @@ function jobStart() {
   job.start();
 }
 function jobStop() {
+  pendingUpdate = []
   job.stop();
 }
 

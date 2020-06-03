@@ -98,8 +98,8 @@ describe("MICROSERVICES TEST", () => {
 
     // CREATE PRODUCT
     describe("ADD PRODUCT SERVICES TEST", () => {
-        //SUCCESS
-        it("create product success", async () => {
+        //SUCCESS - SERVER
+        it("create product success - SERVER", async () => {
             try {
                 res = await chai
                     .request(app)
@@ -141,41 +141,10 @@ describe("MICROSERVICES TEST", () => {
             }
         });
 
-        // FAIL
-        it("create product fail", async () => {
-            wrongInput = {
-                title: null,
-                description: "naga merah",
-                photopath: null,
-                tagStr: "contoh;kayu",
-                value: -1,
-                userId: testUser._id,
-            };
+        //SUCCESS - REDIS
+        
 
-            try {
-                res = await chai
-                    .request(app)
-                    .post("/products/add")
-                    .set("access_token", testToken)
-                    .type('form')
-                    .send(wrongInput)
-                    
-                    // .field("title", "")
-                    // .field("description", testInput.description)
-                    // .field("value", -1)
-                    // .field("userId", testInput.userId)
-                    // .attach("photo", tesPropicPath);
-            } catch (err) {
-                error = err;
-                // console.log("WHAT IS ERROR IN CREATING?");
-                // console.log(error);
-
-                expect(error).to.have.property("code");
-                expect(error).to.have.property("message");
-                expect(error.code).to.be(400);
-                expect(error.message).to.be.a("String");
-            }
-        });
+        
     });
 
     // READ PRODUCT

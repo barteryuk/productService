@@ -1,5 +1,18 @@
 function errorHandler(err, req, res, next) {
-  switch (err.code) {
+
+  if(err.name === "JsonWebTokenError") {
+    return res.status(400).json({
+        status: 400,
+        message: "INVALID TOKEN",
+      });
+  }
+  else if (err instanceof Error) {
+    return res.status(err.code).json({
+        status: err.code,
+        message: err.message,
+      });
+  } else {
+    switch (err.code) {
     case 11000:
       return res.status(400).json({
         status: 400,
@@ -31,6 +44,8 @@ function errorHandler(err, req, res, next) {
         });
       }
   }
+  }
+  
 }
 
 module.exports = errorHandler;

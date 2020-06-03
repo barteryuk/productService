@@ -179,7 +179,7 @@ class productCtrl {
                 tagArr = tagStr.split(',')
             }
             else {
-                tagArr = tagStr
+                tagArr = [tagStr]
             }
 
         } else {

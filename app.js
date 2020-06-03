@@ -20,7 +20,9 @@ var dbName = "productService"
 mongoose.connect(url, { 
   dbName: dbName,
   useNewUrlParser: true, 
-  useUnifiedTopology: true })
+  useUnifiedTopology: true,
+  useFindAndModify: false 
+  })
 
 connection.on('error', (err) => {
   console.error(err);

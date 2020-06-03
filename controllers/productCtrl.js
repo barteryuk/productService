@@ -167,7 +167,13 @@ class productCtrl {
         console.log("this is decrypted")
         console.log(decrypted);
 
-        var tagArr = tagStr.split(';')
+        var tagArr
+        if(tagStr & tagStr.includes(";")) {
+            tagArr = tagStr.split(';')
+        } else {
+            tagArr = []
+        }
+
 
         // PREP INPUT DATA
         inputData = {

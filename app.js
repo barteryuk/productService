@@ -12,7 +12,7 @@ const router = require('./router/index');
 const mongoose = require('mongoose');
 const connection = mongoose.connection;
 
-const job = require("./helpers/cron");
+const {jobStart, jobStop} = require("./helpers/cron");
 
 var url = "mongodb://localhost:27017"
 var dbName = "productService"
@@ -40,14 +40,15 @@ connection.on('ready', () => {
   app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
   app.use(router)
   app.use(errorHandler)
+  jobStart()
   app.listen(port, () => {
 		console.log(`LISTENING ON: ${port}`)
-    // job.start()
 	})
 })
 
 connection.on('disconnected', function(){
   console.log("Mongoose default connection is disconnected");
+  jobStop()
   // job.cancel()
 });
 

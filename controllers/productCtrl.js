@@ -167,9 +167,21 @@ class productCtrl {
         console.log("this is decrypted")
         console.log(decrypted);
 
+        // var seps = /[^a-zA-Z ]+/
+
         var tagArr
-        if(tagStr & tagStr.includes(";")) {
-            tagArr = tagStr.split(';')
+        if(tagStr) {
+
+            if(tagStr.includes(';')) {
+                tagArr = tagStr.split(';')
+            }
+            else if (tagStr.includes(',')) {
+                tagArr = tagStr.split(',')
+            }
+            else {
+                tagArr = tagStr
+            }
+
         } else {
             tagArr = []
         }
